@@ -5,9 +5,9 @@ A simple library for the managment/usage for users
 
 ## Features
 
--Config file encrypted with AES encryption
--Automatic sha256 hashing
--High speed
+> Config file encrypted with AES encryption
+> Automatic sha256 hashing
+> High speed
 
 ## Getting Started
 
