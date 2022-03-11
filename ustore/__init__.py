@@ -4,6 +4,9 @@ import hashlib
 import json
 import pyaes
 
+__version__ = "1.0"
+__author__ = 'JKinc'
+
 udpath = ""
 
 class Initialisation_Error(Exception):
