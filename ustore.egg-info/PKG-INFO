@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: ustore
+Version: 1.0
+Summary: A libary that makes user managment easier.
+Home-page: https://github.com/JKincorperated/ustore/
+Author: JKinc
+Author-email: offical.jkinc@gmail.com
+License: GNU General Public License v3.0
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: Programming Language :: Python :: 3.9
+License-File: LICENSE
+
+UNKNOWN
+

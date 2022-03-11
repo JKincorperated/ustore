@@ -6,7 +6,8 @@ setup(
     description='A libary that makes user managment easier.',
     url='https://github.com/JKincorperated/ustore/',
     author='JKinc',
-    license='ustore
+    license='GNU General Public License v3.0',
+    author_email='offical.jkinc@gmail.com',
     install_requires=['hashlib',
                       'json',         
                       'pyaes',
