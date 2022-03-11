@@ -46,7 +46,7 @@ valid_password("foo","pass")   # Check if the user foo's password is pass
 
 
 #### setconfig(username,configvar,password)
-Will set the config file for the user to configvar, Password must be supplied due to config file encryption
+> Will set the config file for the user to configvar, Password must be supplied due to config file encryption
 
 
 #### getconfig(username,password)
