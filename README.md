@@ -3,6 +3,12 @@
 
 A simple library for the managment/usage for users
 
+## Features
+
+-Config file encrypted with AES encryption
+-Automatic sha256 hashing
+-High speed
+
 ## Getting Started
 
 ### Installing
@@ -25,5 +31,43 @@ valid_password("foo","pass")   # Check if the user foo's password is pass
 ### Documentation
 
 ```
-ustore.init(".") 
+ustore.init(location-for-data-storage) 
 ```
+Will Initialise the user system to location-for-data-storage
+
+
+```
+register_account(username,password)
+```
+Create an account.
+
+
+```
+valid_password(username,password)
+```
+Validates if the supplied password is valid for the account.
+
+Returns Bool value
+
+
+```
+setconfig(username,configvar,password)
+```
+Will set the config file for the user to configvar, Password must be supplied due to config file encryption
+
+
+```
+getconfig(username,password)
+```
+Will get the config file for the user, Password must be supplied due to config file encryption
+
+returns variable
+
+
+Initialisation_Error will be thrown if init() is not called
+
+Invalid_Input_Error will be thrown if an illegal username/password was supplied
+
+User_Exists_Error will be thrown if a user was trying to register an already registered user
+
+Invalid_Password_Error will be thrown if the password validation failed unless called by valid_password()
