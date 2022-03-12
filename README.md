@@ -7,7 +7,7 @@ A simple library for the managment/usage for users
 
 > AES encryption on config files.
 
-> Automatic sha256 hashing on passwords
+> Automatic sha256 hashing on passwords with salt
 
 > High speeds for user R/W
 

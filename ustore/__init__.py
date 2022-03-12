@@ -3,8 +3,11 @@ import platform
 import hashlib
 import json
 import pyaes
+import random
+import uuid
+import time
+import socket
 
-__version__ = "1.0"
 __author__ = 'JKinc'
 
 udpath = ""
@@ -21,6 +24,13 @@ class User_Exists_Error(Exception):
 class Invalid_Password_Error(Exception):
     pass
 
+def gensalt():
+    seed = str(uuid.getnode()) + str(socket.gethostname()) + str(socket.gethostbyname(socket.gethostname())) + str(time.localtime())
+    random.seed(hashlib.sha256(seed.encode("utf-8")))
+    saltchoice = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    x = random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice)
+    return x
+
 if platform.system() == "Windows":
 
     def init(userdatapath="."):
@@ -28,7 +38,6 @@ if platform.system() == "Windows":
         udpath = userdatapath + "\\USERDATA\\"
         if not os.path.exists(udpath):
             os.mkdir(udpath)
-
 
     def register_account(user,password):
 
@@ -44,14 +53,15 @@ if platform.system() == "Windows":
         if udpath == "":
             raise Initialisation_Error
 
-        passwordhash = hashlib.sha256(password.encode()).hexdigest()
-
         if os.path.exists(udpath + user + "\\"):
             raise User_Exists_Error
 
         os.mkdir(udpath + user + "\\")
+        salt = gensalt()
+        open(udpath + user + "\\salt.ini","w").write(salt)
+        passwordhash = hashlib.sha256((password + salt).encode()).hexdigest()
         open(udpath + user + "\\password.ini","w").write(passwordhash)
-    
+
 
     def setconfig(user,config,password):
 
@@ -68,10 +78,13 @@ if platform.system() == "Windows":
             raise Initialisation_Error
 
         iv = "InitializationVe"
-        if not hashlib.sha256(password.encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
+
+        salt = open(udpath + user + "\\salt.ini","r").read()
+
+        if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
             raise Invalid_Password_Error
 
-        key = hashlib.sha3_256(password.encode()).digest()
+        key = hashlib.sha3_256((password + salt).encode()).digest()
         aes = pyaes.AESModeOfOperationCTR(key)
         config = aes.encrypt(json.dumps(config))
 
@@ -93,13 +106,14 @@ if platform.system() == "Windows":
         if udpath == "":
             raise Initialisation_Error
 
+        salt = open(udpath + user + "\\salt.ini","r").read()
 
         iv = "InitializationVe"
 
-        if not hashlib.sha256(password.encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
+        if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
             raise Invalid_Password_Error
 
-        key = hashlib.sha3_256(password.encode()).digest()
+        key = hashlib.sha3_256((password + salt).encode()).digest()
         
         aes = pyaes.AESModeOfOperationCTR(key)
         config = json.loads(aes.decrypt(open(udpath + user + "\\config.ini","rb").read()))
@@ -120,7 +134,9 @@ if platform.system() == "Windows":
         if udpath == "":
             raise Initialisation_Error
 
-        if not hashlib.sha256(password.encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
+        salt = open(udpath + user + "\\salt.ini","r").read()
+
+        if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
             return False
         else:
             return True
@@ -148,12 +164,13 @@ else:
         if udpath == "":
             raise Initialisation_Error
 
-        passwordhash = hashlib.sha256(password.encode()).hexdigest()
-
         if os.path.exists(udpath + user + "/"):
             raise User_Exists_Error
 
         os.mkdir(udpath + user + "/")
+        salt = gensalt()
+        open(udpath + user + "/salt.ini","w").write(salt)
+        passwordhash = hashlib.sha256((password + salt).encode()).hexdigest()
         open(udpath + user + "/password.ini","w").write(passwordhash)
     
 
@@ -172,13 +189,15 @@ else:
             raise Initialisation_Error
 
         iv = "InitializationVe"
-        if not hashlib.sha256(password.encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
+
+        salt = open(udpath + user + "/salt.ini","r").read()
+
+        if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
             raise Invalid_Password_Error
 
-        key = hashlib.sha3_256(password).digest()
+        key = hashlib.sha3_256((password + salt).encode()).digest()
         aes = pyaes.AESModeOfOperationCTR(key)
         config = aes.encrypt(json.dumps(config))
-
 
         open(udpath + user + "/config.ini","wb").write(config)
 
@@ -197,16 +216,16 @@ else:
         if udpath == "":
             raise Initialisation_Error
 
+        salt = open(udpath + user + "/salt.ini","r").read()
 
         iv = "InitializationVe"
 
-        if not hashlib.sha256(password.encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
+        if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
             raise Invalid_Password_Error
 
-        key = hashlib.sha3_256(password).digest()
+        key = hashlib.sha3_256((password + salt).encode()).digest()
         
         aes = pyaes.AESModeOfOperationCTR(key)
-        
         config = json.loads(aes.decrypt(open(udpath + user + "/config.ini","rb").read()))
 
         return config
@@ -225,7 +244,9 @@ else:
         if udpath == "":
             raise Initialisation_Error
 
-        if not hashlib.sha256(password.encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
+        salt = open(udpath + user + "/salt.ini","r").read()
+
+        if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
             return False
         else:
             return True
