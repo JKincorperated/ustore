@@ -26,7 +26,7 @@ class Invalid_Password_Error(Exception):
 
 def gensalt():
     seed = str(uuid.getnode()) + str(socket.gethostname()) + str(socket.gethostbyname(socket.gethostname())) + str(time.localtime())
-    random.seed(hashlib.sha256(seed.encode("utf-8")))
+    random.seed(seed)
     saltchoice = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
     x = random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice) + random.choice(saltchoice)
     return x
@@ -38,6 +38,8 @@ if platform.system() == "Windows":
         udpath = userdatapath + "\\USERDATA\\"
         if not os.path.exists(udpath):
             os.mkdir(udpath)
+        if not os.path.exists(udpath + "salts\\"):
+            os.mkdir(udpath + "salts\\")
 
     def register_account(user,password):
 
@@ -58,7 +60,7 @@ if platform.system() == "Windows":
 
         os.mkdir(udpath + user + "\\")
         salt = gensalt()
-        open(udpath + user + "\\salt.ini","w").write(salt)
+        open(udpath + "salts\\"+ user + "salt.ini","w").write(salt)
         passwordhash = hashlib.sha256((password + salt).encode()).hexdigest()
         open(udpath + user + "\\password.ini","w").write(passwordhash)
 
@@ -79,7 +81,7 @@ if platform.system() == "Windows":
 
         iv = "InitializationVe"
 
-        salt = open(udpath + user + "\\salt.ini","r").read()
+        salt = open(udpath + "salts\\"+ user + "salt.ini","r").read()
 
         if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
             raise Invalid_Password_Error
@@ -106,7 +108,7 @@ if platform.system() == "Windows":
         if udpath == "":
             raise Initialisation_Error
 
-        salt = open(udpath + user + "\\salt.ini","r").read()
+        salt = open(udpath + "salts\\"+ user + "salt.ini","r").read()
 
         iv = "InitializationVe"
 
@@ -134,7 +136,7 @@ if platform.system() == "Windows":
         if udpath == "":
             raise Initialisation_Error
 
-        salt = open(udpath + user + "\\salt.ini","r").read()
+        salt = open(udpath + "salts\\"+ user + "salt.ini","r").read()
 
         if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "\\password.ini","r").read():
             return False
@@ -148,7 +150,8 @@ else:
         udpath = userdatapath + "/USERDATA/"
         if not os.path.exists(udpath):
             os.mkdir(udpath)
-
+        if not os.path.exists(udpath + "salts/"):
+            os.mkdir(udpath + "salts/")
 
     def register_account(user,password):
 
@@ -169,7 +172,7 @@ else:
 
         os.mkdir(udpath + user + "/")
         salt = gensalt()
-        open(udpath + user + "/salt.ini","w").write(salt)
+        open(udpath + "salts/"+ user + "salt.ini","w").write(salt)
         passwordhash = hashlib.sha256((password + salt).encode()).hexdigest()
         open(udpath + user + "/password.ini","w").write(passwordhash)
     
@@ -190,7 +193,7 @@ else:
 
         iv = "InitializationVe"
 
-        salt = open(udpath + user + "/salt.ini","r").read()
+        salt = open(udpath + "salts/"+ user + "salt.ini","r").read()
 
         if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
             raise Invalid_Password_Error
@@ -216,7 +219,7 @@ else:
         if udpath == "":
             raise Initialisation_Error
 
-        salt = open(udpath + user + "/salt.ini","r").read()
+        salt = open(udpath + "salts/"+ user + "salt.ini","r").read()
 
         iv = "InitializationVe"
 
@@ -244,7 +247,7 @@ else:
         if udpath == "":
             raise Initialisation_Error
 
-        salt = open(udpath + user + "/salt.ini","r").read()
+        salt = open(udpath + "salts/"+ user + "salt.ini","r").read()
 
         if not hashlib.sha256((password + salt).encode()).hexdigest() == open(udpath + user + "/password.ini","r").read():
             return False

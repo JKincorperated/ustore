@@ -23,11 +23,11 @@ pip install ustore
 
 ```
 import ustore
-ustore.init(".")               # Set user storage location to current dir
-register_account("foo","bar")  # Make a user with the username foo and a password bar
-setconfig("foo","data","bar")  # Set the config value for the user foo to data
-getconfig("foo","bar)          # Get the config for the user foo
-valid_password("foo","pass")   # Check if the user foo's password is pass
+ustore.init(".")                 # Set user storage location to current dir
+register_account("user","pass")  # Make a user with the username user and a password bar
+setconfig("user","data","pass")  # Set the config value for the user user to data
+getconfig("user","pass")         # Get the config for the user user
+valid_password("user","pass2")    # Check if the user user's password is pass
 ```
 
 ### Documentation
