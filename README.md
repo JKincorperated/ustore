@@ -11,6 +11,8 @@ A simple library for the managment/usage for users
 
 > High speeds for user R/W
 
+> Supports importing and exporting userdata
+
 ## Getting Started
 
 ### Installing
@@ -23,11 +25,11 @@ pip install ustore
 
 ```
 import ustore
-ustore.init(".")                 # Set user storage location to current dir
-register_account("user","pass")  # Make a user with the username user and a password bar
-setconfig("user","data","pass")  # Set the config value for the user user to data
-getconfig("user","pass")         # Get the config for the user user
-valid_password("user","pass2")    # Check if the user user's password is pass
+ustore.init(".")                                                                                     # Set user storage location to current dir
+ustore.register_account("user","pass")                                    # Make a user with the username user and a password bar
+ustore.setconfig("user","data","pass")                                     # Set the config value for the user user to data
+ustore.getconfig("user","pass")                                                   # Get the config for the user user
+ustore.valid_password("user","pass2")                                    # Check if the user user's password is pass
 ```
 
 ### Documentation
@@ -49,11 +51,6 @@ valid_password("user","pass2")    # Check if the user user's password is pass
 > Will set the config file for the user to configvar, Password must be supplied due to config file encryption
 
 
-#### getconfig(username,password)
-> Will get the config file for the user, Password must be supplied due to config file encryption
-> returns variable
-
-
 #### Initialisation_Error 
 > Will be thrown if init() is not called
 
@@ -68,3 +65,10 @@ valid_password("user","pass2")    # Check if the user user's password is pass
 
 #### Invalid_Password_Error
 > Will be thrown if the password validation failed unless called by valid_password()
+
+
+### Donate
+
+#### Etheriuem address: 0x25916caa0dB559bC7F21850cfE678dc9f273A8D7
+
+#### Nano address : nano_34qtke9s99bgakufzyxyzzropuz4sbya4xgty9m441wnmzayngy35amyd58j
