@@ -7,6 +7,7 @@ import random
 import uuid
 import time
 import socket
+import shutil
 
 __author__ = 'JKinc'
 
